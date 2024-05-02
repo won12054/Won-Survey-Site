@@ -1,0 +1,104 @@
+header {
+  box-sizing: border-box;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 0px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 6px hsla(0, 0%, 0%, 0.05);
+  backdrop-filter: blur(10px);
+}
+
+.logo {
+  margin: 4px 40px 0px 10px;
+}
+
+.logo-image {
+  width: 50px;
+  height: auto;
+}
+
+nav {
+  flex-grow: 1;
+  text-align: center;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+}
+
+nav ul li {
+  padding: 0 15px;
+}
+
+nav ul li a {
+  color: hsl(0, 0%, 20%);
+  text-decoration: none;
+  padding: 10px;
+  position: relative;
+  font-size: 16px;
+  transition: all 0.3s ease-in-out;
+}
+
+nav ul li a:hover {
+  color: hsla(0, 0%, 0%, 0.69);
+  font-weight: bold;
+}
+
+.signin a {
+  color: hsl(210, 54%, 52%);
+  padding: 8px 16px;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.signin a:hover {
+  background-color: hsl(210, 54%, 52%);
+  color: hsl(220, 18%, 97%);
+}
+
+
+/* Mobile view */
+@media (max-width: 768px) {
+  header {
+    justify-content: flex-start;
+    padding: 10px;
+  }
+
+  .logo {
+    display: none;
+  }
+
+  nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  nav ul {
+    padding: 0;
+    margin: 0;
+  }
+
+  nav ul li {
+    margin: 5px 0;
+  }
+
+
+  .signin {
+    display: none;
+  }
+
+
+}

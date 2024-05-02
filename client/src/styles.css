@@ -1,1 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
+body {
+  font-family: 'Roboto Mono', monospace;
+  background-image: url('assets/images/background-image.png');
+
+  background-repeat: repeat;
+}
+
+@media (max-width: 768px) {
+  body {
+    background-image: url('assets/images/background-image-mobile.png');
+    background-size: cover;
+
+  }
+}
