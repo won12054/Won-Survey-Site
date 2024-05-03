@@ -4,18 +4,23 @@ import { of } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { ApiService } from '../../services/api.service';
 import * as UserActions from '../actions/user.actions';
-import { LoginResponse } from 'src/app/interfaces/login-response.interface';
 import { Router } from '@angular/router';
 
 @Injectable()
 export class UserEffects {
+  constructor(
+    private actions$: Actions,
+    private apiService: ApiService,
+    private router: Router
+  ) {}
+
   login$ = createEffect(() => this.actions$.pipe(
     ofType(UserActions.login),
-    mergeMap(action =>
+    mergeMap(action => // handle effects that involve asynchronous operations like API calls and flattens the observables from multiple actions into a single observable.
       this.apiService.login(action.email, action.password)
         .pipe(
           map(response => UserActions.loginSuccess({ user: response.user })),
-          catchError(error => of(UserActions.loginFailure({ error })))
+          catchError(error => of(UserActions.loginFailure({ error: error.error.message })))
         )
     )
   ));
@@ -24,13 +29,24 @@ export class UserEffects {
     ofType(UserActions.loginSuccess),
     tap(() => {
       console.log('Login successful');
-      this.router.navigate(['/home']);
+      this.router.navigate(['/']);
+    })
+  ), { dispatch: false }); // no actions required to be dispatched
+
+  register$ = createEffect(() => this.actions$.pipe(
+    ofType(UserActions.register),
+    mergeMap(action =>
+      this.apiService.register(action.user).pipe(
+        map(response => UserActions.registerSuccess({ message: response })),
+        catchError(error => of(UserActions.registerFailure({ error: error.error.message })))
+      )
+    )
+  ));
+
+  registerSuccess$ = createEffect(() => this.actions$.pipe(
+    ofType(UserActions.registerSuccess),
+    tap(() => {
+      this.router.navigate(['/login']);
     })
   ), { dispatch: false });
-
-  constructor(
-    private actions$: Actions,
-    private apiService: ApiService,
-    private router: Router
-  ) {}
 }

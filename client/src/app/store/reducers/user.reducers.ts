@@ -1,8 +1,9 @@
 import { createReducer, on } from '@ngrx/store';
 import * as UserActions from '../actions/user.actions';
+import { User } from 'src/app/models/user.model';
 
 export interface UserState {
-  user: any | null;
+  user: User | null;
   isAuthenticated: boolean;
   error: any | null;
 }
@@ -30,5 +31,15 @@ export const userReducer = createReducer(
     ...state,
     user: null,
     isAuthenticated: false
+  })),
+  on(UserActions.registerSuccess, (state, { message }) => ({
+    ...state,
+    message: message,
+    error: null
+  })),
+  on(UserActions.registerFailure, (state, { error }) => ({
+    ...state,
+    error: error,
+    message: null
   }))
 );

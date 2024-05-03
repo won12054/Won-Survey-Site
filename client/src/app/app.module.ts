@@ -10,11 +10,12 @@ import { SurveyComponent } from './components/survey/survey.component';
 import { AnalysisComponent } from './components/analysis/analysis.component';
 import { SupportComponent } from './components/support/support.component';
 import { LoginComponent } from './components/login/login.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { userReducer } from './store/reducers/user.reducers';
 import { UserEffects } from './store/effects/user.effects';
+import { RegistrationComponent } from './components/register/registration.component';
 
 @NgModule({
   declarations: [
@@ -25,12 +26,14 @@ import { UserEffects } from './store/effects/user.effects';
     AnalysisComponent,
     SupportComponent,
     LoginComponent,
+    RegistrationComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     StoreModule.forRoot({user: userReducer}),
     EffectsModule.forRoot([UserEffects])
   ],

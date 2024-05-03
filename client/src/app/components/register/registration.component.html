@@ -1,0 +1,56 @@
+<div class="registration-container">
+  <h2>Register</h2>
+  <form [formGroup]="registrationForm" (ngSubmit)="register()">
+    <div class="form-group">
+      <label for="username">Username:</label>
+      <input type="text" id="username" formControlName="username">
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" formControlName="email">
+    </div>
+
+    <div class="form-group">
+      <label for="birth_date">Birth Date:</label>
+      <input type="date" id="birth_date" formControlName="birth_date">
+    </div>
+
+    <div class="form-group">
+      <label>Gender:</label>
+      <div *ngFor="let gender of genderOptions">
+        <input type="radio" [value]="gender" formControlName="gender"> {{gender}}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="country">Country:</label>
+      <select id="country" formControlName="country">
+        <option *ngFor="let country of countryOptions" [value]="country">{{country}}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="education_level">Education Level:</label>
+      <select id="education_level" formControlName="education_level">
+        <option *ngFor="let level of educationLevels" [value]="level">{{level}}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="ethnicity">Ethnicity:</label>
+      <select id="ethnicity" formControlName="ethnicity">
+        <option *ngFor="let ethnicity of ethnicities" [value]="ethnicity">{{ethnicity}}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="subscription_type">Subscription Type:</label>
+      <select id="subscription_type" formControlName="subscription_type">
+        <option *ngFor="let type of subscriptionTypes" [value]="type">{{type}}</option>
+      </select>
+    </div>
+
+    <button type="submit" [disabled]="!registrationForm.valid">Register</button>
+  </form>
+</div>

@@ -7,15 +7,30 @@ export const login = createAction(
 );
 
 export const loginSuccess = createAction(
-  '[Auth API] Login Success',
+  '[Login Component] Login Success',
   props<{ user: User }>()
 );
 
 export const loginFailure = createAction(
-  '[Auth API] Login Failure',
+  '[Login Component] Login Failure',
   props<{ error: any }>()
 );
 
 export const logout = createAction(
   '[Home Component] Logout'
 );
+
+export const register = createAction(
+  '[Registration Component] Register',
+  props<{ user: User }>()
+)
+
+export const registerSuccess = createAction(
+  '[Registration Component] Register Success',
+  props<{ message: string}>()
+)
+
+export const registerFailure = createAction(
+  '[Registration Component] Register Failure',
+  props<{ error: string }>()
+)

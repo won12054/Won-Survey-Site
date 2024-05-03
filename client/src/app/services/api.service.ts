@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { LoginResponse } from '../interfaces/login-response.interface';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +13,12 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
-  displayHome() {
-    return this.http.get<{message: string}>(`${this.baseUrl}/api/`);
-  }
-
   login(email: string, password: string): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.baseUrl}/api/auth/login`, { email, password });
+  }
+
+  register(user: User): Observable<any> {
+    return this.http.post(`${this.baseUrl}/api/auth/register`, user);
   }
 
   getUserInfo(userId: string) {

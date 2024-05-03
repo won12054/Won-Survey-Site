@@ -28,7 +28,7 @@ exports.login = (req, res, next) => {
                 );
                 return res.json({ message: 'Successfully logged in', user: updatedUser });
             } catch (error) {
-                return res.status(500).json({ message: "Failed to update login count" });
+                return res.status(500).json({ message: "Failed to login" });
             }
         });
     })(req, res, next); // pass the request, response, and next function to passport.authenticate middleware

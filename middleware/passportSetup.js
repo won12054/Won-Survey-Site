@@ -8,10 +8,10 @@ passport.use(new LocalStrategy({ usernameField: 'email' },
     try {
       const user = await User.findOne({ email }); // look for user with the provided email
       if (!user) { 
-        return done(null, false, { message: 'Incorrect email.' });
+        return done(null, false, { message: 'Incorrect email!' });
       }
       if (!bcrypt.compareSync(password, user.password)) {
-        return done(null, false, { message: 'Incorrect password.' });
+        return done(null, false, { message: 'Incorrect password!' });
       }
       return done(null, user); 
     } catch (error) {

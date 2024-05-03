@@ -1,4 +1,4 @@
-.login-container {
+.registration-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,7 +12,7 @@
   margin: 75px auto 0 auto;
 }
 
-.login-box h2 {
+.registration-box h2 {
   margin-bottom: 20px;
 }
 
@@ -25,11 +25,15 @@
   margin-bottom: 5px;
 }
 
-.form-group input {
+.form-group input, .form-group select {
   width: 100%;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
+}
+
+.form-group input[type="radio"] {
+  margin-right: 5px;
 }
 
 button {
