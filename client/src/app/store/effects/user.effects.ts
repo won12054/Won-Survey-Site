@@ -33,20 +33,4 @@ export class UserEffects {
     })
   ), { dispatch: false }); // no actions required to be dispatched
 
-  register$ = createEffect(() => this.actions$.pipe(
-    ofType(UserActions.register),
-    mergeMap(action =>
-      this.apiService.register(action.user).pipe(
-        map(response => UserActions.registerSuccess({ message: response })),
-        catchError(error => of(UserActions.registerFailure({ error: error.error.message })))
-      )
-    )
-  ));
-
-  registerSuccess$ = createEffect(() => this.actions$.pipe(
-    ofType(UserActions.registerSuccess),
-    tap(() => {
-      this.router.navigate(['/login']);
-    })
-  ), { dispatch: false });
 }

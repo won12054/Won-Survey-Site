@@ -16,6 +16,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { userReducer } from './store/reducers/user.reducers';
 import { UserEffects } from './store/effects/user.effects';
 import { RegistrationComponent } from './components/register/registration.component';
+import { registrationReducer } from './store/reducers/registration.reducers';
+import { RegistrationEffects } from './store/effects/registration.effects';
 
 @NgModule({
   declarations: [
@@ -34,8 +36,8 @@ import { RegistrationComponent } from './components/register/registration.compon
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    StoreModule.forRoot({user: userReducer}),
-    EffectsModule.forRoot([UserEffects])
+    StoreModule.forRoot({user: userReducer, registration: registrationReducer}),
+    EffectsModule.forRoot([UserEffects, RegistrationEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]

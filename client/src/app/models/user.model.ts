@@ -3,7 +3,7 @@ export interface User {
   username: string;
   email: string;
   birth_date?: Date;
-  gender?: 'male' | 'female' | 'other';
+  gender?: string;
   country: string;
   occupation?: string;
   education_level?: string;

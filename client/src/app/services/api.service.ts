@@ -21,6 +21,14 @@ export class ApiService {
     return this.http.post(`${this.baseUrl}/api/auth/register`, user);
   }
 
+  checkEmailExists(email: string): Observable<any> {
+    return this.http.get('api/auth/check-email?email=${email}');
+  }
+
+  checkUsernameExists(username: string): Observable<any> {
+    return this.http.get('api/auth/check-username?username=${username}')
+  }
+
   getUserInfo(userId: string) {
     return this.http.get<{user: any, message: string}>(`${this.baseUrl}/api/users/${userId}`);
   }

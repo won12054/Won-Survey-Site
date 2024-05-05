@@ -20,17 +20,3 @@ export const logout = createAction(
   '[Home Component] Logout'
 );
 
-export const register = createAction(
-  '[Registration Component] Register',
-  props<{ user: User }>()
-)
-
-export const registerSuccess = createAction(
-  '[Registration Component] Register Success',
-  props<{ message: string}>()
-)
-
-export const registerFailure = createAction(
-  '[Registration Component] Register Failure',
-  props<{ error: string }>()
-)

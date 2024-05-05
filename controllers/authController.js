@@ -11,6 +11,34 @@ exports.register = async (req, res) => {
     }
 };
 
+// check if the email already exists
+exports.checkEmailExists = async (req, res) => {
+    const { email } = req.query;
+    try {
+        const emailExists = await User.findOneAndDelete({ email });
+        if (email.Exists) {
+            return res.status(409).json({ message: 'Email is already taken' });
+        }
+        res.status(200).json({ message: 'Email is aviailable' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+// check if the username already exists
+exports.checkUsernameExists = async (req, res) => {
+    const { username } = req.query;
+    try {
+        const userExists = await User.findOne({ username });
+        if (userExists) {
+            return res.status(409).json({ message: 'Username already exists' });
+        }
+        res.status(200).json({ message: 'Username is available' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 exports.login = (req, res, next) => {
     passport.authenticate('local', async (err, user, info) => {
         if (err) return next(err); // handle passport errors by passing them to the next middleware

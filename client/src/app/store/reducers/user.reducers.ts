@@ -32,14 +32,4 @@ export const userReducer = createReducer(
     user: null,
     isAuthenticated: false
   })),
-  on(UserActions.registerSuccess, (state, { message }) => ({
-    ...state,
-    message: message,
-    error: null
-  })),
-  on(UserActions.registerFailure, (state, { error }) => ({
-    ...state,
-    error: error,
-    message: null
-  }))
 );
