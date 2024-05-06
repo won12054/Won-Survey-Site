@@ -14,6 +14,7 @@ import { selectIsEmailAvailable, selectIsUsernameAvailable, selectRegistrationEr
 export class RegistrationComponent {
   registrationForm: FormGroup;
   today: string;
+  submitted: boolean = false;
 
   isUsernameAvailable$: Observable<boolean>;
   isEmailAvailable$: Observable<boolean>;
@@ -117,13 +118,22 @@ export class RegistrationComponent {
   }
 
 
-  passwordMatchValidator(): ValidatorFn {
-    return (frm: AbstractControl): ValidationErrors | null => {
-      const password = frm.get('password');
-      const confirmPassword = frm.get('confirm_password');
-      return password && confirmPassword && password.value !== confirmPassword.value ? { 'mismatch': true } : null;
+  passwordMatchValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      if (!control.parent || !control.parent.get('password') || !control.parent.get('confirm_password')) {
+        return of(null);  // Ensure both fields are initialized
+      }
+
+      const password = control.parent.get('password').value;
+      const confirmPassword = control.parent.get('confirm_password').value;
+
+      if (password !== confirmPassword) {
+        return of({ mismatch: true });
+      }
+      return of(null);
     };
   }
+
 
   dateValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
@@ -153,13 +163,9 @@ export class RegistrationComponent {
   }
 
   register() {
+    this.submitted = true;
     if (this.registrationForm.valid) {
       this.store.dispatch(RegistrationActions.register({ user: this.registrationForm.getRawValue() }));
     }
   }
-
-  // TODO
-  // password mismatch
-  // register doesn't work
-  // error messages makes input size longer..
 }

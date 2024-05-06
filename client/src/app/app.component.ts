@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+import * as UserActions from './store/actions/user.actions';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'client';
+  constructor(private store: Store) {}
+
+  ngOnInit() {
+    this.store.dispatch(UserActions.autoLogin());
+  }
 }

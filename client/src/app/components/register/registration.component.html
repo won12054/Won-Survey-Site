@@ -25,7 +25,7 @@
           Password is required.
         </div>
         <div *ngIf="registrationForm.get('password').hasError('minlength')" class="error">
-          Password must be 8 characters minimum.
+          Minimum 8 characters.
         </div>
       </div>
     </div>
@@ -35,9 +35,9 @@
       <input type="password" id="confirm_password" formControlName="confirm_password">
       <div *ngIf="registrationForm.get('confirm_password').touched">
         <div *ngIf="registrationForm.get('confirm_password').hasError('required')" class="error">
-          Confirm password is required.
+          This field is required.
         </div>
-        <div *ngIf="registrationForm.hasError('mismatch')" class="error">
+        <div *ngIf="registrationForm.get('confirm_password').hasError('mismatch')" class="error">
           Passwords do not match.
         </div>
       </div>
@@ -61,13 +61,13 @@
           Birth date is required.
         </div>
         <div *ngIf="registrationForm.get('birth_date').hasError('futureDate')" class="error">
-          Birth date cannot be in the future.
+          No future date.
         </div>
         <div *ngIf="registrationForm.get('birth_date').hasError('tooEarly')" class="error">
-          Birth date must be after January 1, 1900.
+          Must be after 01/01/1900.
         </div>
         <div *ngIf="registrationForm.get('birth_date').hasError('invalidDate')" class="error">
-          Please enter a valid date.
+          Enter a valid date.
         </div>
       </div>
     </div>
@@ -112,6 +112,9 @@
       </select>
     </div>
 
-    <button type="submit" [disabled]="!registrationForm.valid">Register</button>
+    <button type="submit">Register</button>
+    <div *ngIf="submitted && !registrationForm.valid" class="error">
+      Failed to register!
+    </div>
   </form>
 </div>

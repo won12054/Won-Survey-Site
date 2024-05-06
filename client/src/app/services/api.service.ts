@@ -30,6 +30,6 @@ export class ApiService {
   }
 
   getUserInfo(userId: string) {
-    return this.http.get<{user: any, message: string}>(`${this.baseUrl}/api/users/${userId}`);
+    return this.http.get<User>(`${this.baseUrl}/api/users/${userId}`);
   }
 }

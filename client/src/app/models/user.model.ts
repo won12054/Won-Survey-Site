@@ -11,5 +11,5 @@ export interface User {
   registration_date: Date;
   last_login: Date;
   login_count: number;
-  subscription_type: 'free' | 'premium' | 'enterprise';
+  subscription_type: 'Free' | 'Premium' | 'Enterprise';
 }

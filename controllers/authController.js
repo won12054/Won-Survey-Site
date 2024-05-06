@@ -1,12 +1,22 @@
 const User = require('../models/user');
 const passport = require('passport');
+const jwt = require('jsonwebtoken');
 
 exports.register = async (req, res) => {
     try {
         const newUser = new User(req.body);
-        await newUser.save();
-        res.status(201).send('User registered');
+        const savedUser = await newUser.save();
+
+        const token = jwt.sign(
+            { id: savedUser._id },
+            process.env.JWT_SECRET, 
+            { expiresIn: '1h' }  
+        );
+
+        
+        res.status(201).json({ message: 'User registered', token: token });
     } catch (error) {
+        console.log(error.message);
         res.status(500).json({ error: error.message });
     }
 };
@@ -40,23 +50,30 @@ exports.checkUsernameExists = async (req, res) => {
 
 exports.login = (req, res, next) => {
     passport.authenticate('local', async (err, user, info) => {
-        if (err) return next(err); // handle passport errors by passing them to the next middleware
-        if (!user) { 
+        if (err) return next(err);
+        if (!user) {
             return res.status(400).json({ message: info.message });
         }
 
         req.logIn(user, async function(err) {
-            if (err) return next(err); 
+            if (err) return next(err);
             try {
+                const token = jwt.sign(
+                    { id: user._id },
+                    process.env.JWT_SECRET,
+                    { expiresIn: '1h' }
+                );
+
                 const updatedUser = await User.findByIdAndUpdate(
                     user._id,
-                    { $inc: { login_count: 1 }, last_login: new Date() }, // update the login count and last login date
+                    { $inc: { login_count: 1 }, last_login: new Date() },
                     { new: true, useFindAndModify: false }
                 );
-                return res.json({ message: 'Successfully logged in', user: updatedUser });
+
+                return res.json({ message: 'Successfully logged in', user: updatedUser, token: token });
             } catch (error) {
-                return res.status(500).json({ message: "Failed to login" });
+                return res.status(500).json({ message: "Failed to login", error: error.message });
             }
         });
-    })(req, res, next); // pass the request, response, and next function to passport.authenticate middleware
+    })(req, res, next);
 };

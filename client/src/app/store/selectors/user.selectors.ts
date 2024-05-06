@@ -17,3 +17,8 @@ export const selectError = createSelector(
   selectUserState,
   userState => userState.error
 );
+
+export const selectToken = createSelector(
+  selectUserState,
+  userState => userState.token
+)

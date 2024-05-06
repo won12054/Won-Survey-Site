@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
     registration_date: { type: Date, default: Date.now },
     last_login: { type: Date, default: Date.now },
     login_count: { type: Number, default: 0 },
-    subscription_type: { type: String, enum: ['free', 'premium', 'enterprise'], default: 'free'},
+    subscription_type: { type: String, enum: ['Free', 'Premium', 'Enterprise'], default: 'Free'},
 });
 
 // runs before a document is saved to the database
