@@ -22,11 +22,11 @@ export class ApiService {
   }
 
   checkEmailExists(email: string): Observable<any> {
-    return this.http.get('api/auth/check-email?email=${email}');
+    return this.http.get(`${this.baseUrl}/api/auth/check-email?email=${email}`);
   }
 
   checkUsernameExists(username: string): Observable<any> {
-    return this.http.get('api/auth/check-username?username=${username}')
+      return this.http.get(`${this.baseUrl}/api/auth/check-username?username=${username}`);
   }
 
   getUserInfo(userId: string) {

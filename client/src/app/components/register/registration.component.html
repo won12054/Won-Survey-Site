@@ -1,42 +1,93 @@
 <div class="registration-container">
   <h2>Register</h2>
-  <form [formGroup]="registrationForm" (ngSubmit)="register()">
+  <form [formGroup]="registrationForm" (ngSubmit)="register()" novalidate>
     <div class="form-group">
-      <label for="email">Email:</label>
+      <label for="email">Email</label>
       <input type="email" id="email" formControlName="email">
+      <div *ngIf="registrationForm.get('email')?.touched || registrationForm.get('email')?.dirty">
+        <div *ngIf="registrationForm.get('email')?.hasError('required')" class="error">
+          Email is required.
+        </div>
+        <div *ngIf="registrationForm.get('email')?.hasError('email')" class="error">
+          Invalid email format.
+        </div>
+        <div *ngIf="registrationForm.get('email')?.hasError('emailTaken')" class="error">
+          Email is already in use.
+        </div>
+      </div>
     </div>
 
     <div class="form-group">
-      <label for="password">Password:</label>
+      <label for="password">Password</label>
       <input type="password" id="password" formControlName="password">
+      <div *ngIf="registrationForm.get('password').touched">
+        <div *ngIf="registrationForm.get('password').hasError('required')" class="error">
+          Password is required.
+        </div>
+        <div *ngIf="registrationForm.get('password').hasError('minlength')" class="error">
+          Password must be 8 characters minimum.
+        </div>
+      </div>
     </div>
 
     <div class="form-group">
-      <label for="confirm_password">Confirm Password:</label>
+      <label for="confirm_password">Confirm Password</label>
       <input type="password" id="confirm_password" formControlName="confirm_password">
+      <div *ngIf="registrationForm.get('confirm_password').touched">
+        <div *ngIf="registrationForm.get('confirm_password').hasError('required')" class="error">
+          Confirm password is required.
+        </div>
+        <div *ngIf="registrationForm.hasError('mismatch')" class="error">
+          Passwords do not match.
+        </div>
+      </div>
     </div>
 
     <div class="form-group">
-      <label for="username">Username:</label>
+      <label for="username">Username</label>
       <input type="text" id="username" formControlName="username">
+      <div *ngIf="registrationForm.get('username').errors && (registrationForm.get('username').dirty || registrationForm.get('username').touched)">
+        <div *ngIf="registrationForm.get('username').hasError('required')" class="error">Username is required.</div>
+        <div *ngIf="registrationForm.get('username').hasError('usernameTaken')" class="error">Username is already taken.</div>
+      </div>
     </div>
 
     <div class="form-group">
-      <label for="birth_date">Birth Date:</label>
-      <input type="date" id="birth_date" formControlName="birth_date">
+      <label for="birth_date">Birth Date</label>
+      <input type="date" id="birth_date" formControlName="birth_date" [max]="today">
+      <div *ngIf="registrationForm.get('birth_date').touched">
+
+        <div *ngIf="registrationForm.get('birth_date').hasError('required')" class="error">
+          Birth date is required.
+        </div>
+        <div *ngIf="registrationForm.get('birth_date').hasError('futureDate')" class="error">
+          Birth date cannot be in the future.
+        </div>
+        <div *ngIf="registrationForm.get('birth_date').hasError('tooEarly')" class="error">
+          Birth date must be after January 1, 1900.
+        </div>
+        <div *ngIf="registrationForm.get('birth_date').hasError('invalidDate')" class="error">
+          Please enter a valid date.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="country">Country</label>
+      <select id="country" formControlName="country">
+        <option *ngFor="let country of countryOptions" [value]="country">{{ country }}</option>
+      </select>
+      <div *ngIf="registrationForm.get('country').touched && registrationForm.get('country').errors">
+        <div *ngIf="registrationForm.get('country').hasError('required')" class="error">
+          Country is required.
+        </div>
+      </div>
     </div>
 
     <div class="form-group">
       <label>Gender</label>
       <select id="gender" formControlName="gender">
         <option *ngFor="let gender of genderOptions" [value]="gender">{{ gender }}</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="country">Country</label>
-      <select id="country" formControlName="country">
-        <option *ngFor="let country of countryOptions" [value]="country">{{country}}</option>
       </select>
     </div>
 
@@ -48,14 +99,14 @@
     </div>
 
     <div class="form-group">
-      <label for="ethnicity">Ethnicity:</label>
+      <label for="ethnicity">Ethnicity</label>
       <select id="ethnicity" formControlName="ethnicity">
         <option *ngFor="let ethnicity of ethnicities" [value]="ethnicity">{{ethnicity}}</option>
       </select>
     </div>
 
     <div class="form-group">
-      <label for="subscription_type">Subscription Type:</label>
+      <label for="subscription_type">Subscription Type</label>
       <select id="subscription_type" formControlName="subscription_type">
         <option *ngFor="let type of subscriptionTypes" [value]="type">{{type}}</option>
       </select>

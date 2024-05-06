@@ -1,5 +1,6 @@
 .registration-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 20px;
@@ -8,16 +9,17 @@
   border-radius: 15px;
   text-align: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 300px;
+  max-width: 400px;
   margin: 75px auto 0 auto;
 }
 
-.registration-box h2 {
-  margin-bottom: 20px;
+.registration-container h2 {
+  margin-top: 0;
 }
 
 .form-group {
   margin-bottom: 20px;
+  width: 100%;
 }
 
 .form-group label {
@@ -26,14 +28,11 @@
 }
 
 .form-group input, .form-group select {
-  width: 100%;
+  width: calc(100% - 22px);
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
-}
-
-.form-group input[type="radio"] {
-  margin-right: 5px;
+  box-sizing: border-box;
 }
 
 button {
@@ -45,7 +44,7 @@ button {
   cursor: pointer;
   margin: 20px 0;
   font-size: 1em;
-  width: 100px;
+  width: 100%;
 }
 
 .error {

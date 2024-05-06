@@ -2,9 +2,9 @@ export interface User {
   _id: string;
   username: string;
   email: string;
-  birth_date?: Date;
-  gender?: string;
   country: string;
+  birth_date: Date;
+  gender?: string;
   occupation?: string;
   education_level?: string;
   ethnicity?: string;

@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 import * as RegistrationActions from '../actions/registration.actions';
 import { ApiService } from '../../services/api.service';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class RegistrationEffects {
@@ -31,28 +32,20 @@ export class RegistrationEffects {
         })
     ), { dispatch: false });
 
-    checkUsernameAvailability$ = createEffect(() => this.actions$.pipe(
-      ofType(RegistrationActions.checkUsernameAvailability),
-      mergeMap(action =>
-        this.apiService.checkUsernameExists(action.username).pipe(
-          map(result => result.isAvailable ?
-            RegistrationActions.checkUsernameAvailabilitySuccess({ isAvailable: true }) :
-            RegistrationActions.checkUsernameAvailabilitySuccess({ isAvailable: false })),
-          catchError(error => of(RegistrationActions.checkUsernameAvailabilityFailure({ error })))
-        )
-      )
-    ));
 
-    // Effect for checking email availability
     checkEmailAvailability$ = createEffect(() => this.actions$.pipe(
       ofType(RegistrationActions.checkEmailAvailability),
-      mergeMap(action =>
-        this.apiService.checkEmailExists(action.email).pipe(
-          map(result => result.isAvailable ?
-            RegistrationActions.checkEmailAvailabilitySuccess({ isAvailable: true }) :
-            RegistrationActions.checkEmailAvailabilitySuccess({ isAvailable: false })),
-          catchError(error => of(RegistrationActions.checkEmailAvailabilityFailure({ error })))
-        )
-      )
+      mergeMap(action => this.apiService.checkEmailExists(action.email).pipe(
+          map(result => RegistrationActions.checkEmailAvailabilitySuccess({ isAvailable: result.isAvailable })),
+          catchError(error => of(RegistrationActions.checkEmailAvailabilityFailure({ error: error.message })))
+      ))
+    ));
+
+    checkUsernameAvailability$ = createEffect(() => this.actions$.pipe(
+        ofType(RegistrationActions.checkUsernameAvailability),
+        mergeMap(action => this.apiService.checkUsernameExists(action.username).pipe(
+            map(result => RegistrationActions.checkUsernameAvailabilitySuccess({ isAvailable: result.isAvailable })),
+            catchError(error => of(RegistrationActions.checkUsernameAvailabilityFailure({ error: error.message })))
+        ))
     ));
 }

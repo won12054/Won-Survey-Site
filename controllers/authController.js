@@ -11,19 +11,18 @@ exports.register = async (req, res) => {
     }
 };
 
-// check if the email already exists
 exports.checkEmailExists = async (req, res) => {
     const { email } = req.query;
     try {
-        const emailExists = await User.findOneAndDelete({ email });
-        if (email.Exists) {
-            return res.status(409).json({ message: 'Email is already taken' });
+        const emailExists = await User.findOne({ email });
+        if (emailExists) {
+            return res.status(200).json({ isAvailable: false, message: 'Email is already taken' });
         }
-        res.status(200).json({ message: 'Email is aviailable' });
+        res.status(200).json({ isAvailable: true, message: 'Email is available' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-}
+};
 
 // check if the username already exists
 exports.checkUsernameExists = async (req, res) => {
@@ -31,9 +30,9 @@ exports.checkUsernameExists = async (req, res) => {
     try {
         const userExists = await User.findOne({ username });
         if (userExists) {
-            return res.status(409).json({ message: 'Username already exists' });
+            return res.status(200).json({ isAvailable: false, message: 'Username already exists' });
         }
-        res.status(200).json({ message: 'Username is available' });
+        res.status(200).json({ isAvailable: true, message: 'Username is available' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
