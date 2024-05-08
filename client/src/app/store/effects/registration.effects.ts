@@ -25,8 +25,9 @@ export class RegistrationEffects {
         mergeMap(action =>
             this.apiService.register(action.user).pipe(
                 map(response => {
+                  const user = response.user;
                   const token = response.token;
-                  return RegistrationActions.registerSuccess({ message: 'Registration successful!', token: token })
+                  return RegistrationActions.registerSuccess({ user: user, message: 'Registration successful!', token: token })
                 }),
                 catchError(error => of(RegistrationActions.registerFailure({ error: error.error.message })))
             )
@@ -36,32 +37,11 @@ export class RegistrationEffects {
     registerSuccess$ = createEffect(() => this.actions$.pipe(
         ofType(RegistrationActions.registerSuccess),
         tap((action) => {
-            this.sessionService.setItem('token', action.token);
+            this.sessionService.setItem('username', action.user.username);
             this.store.dispatch(UserActions.storeToken({ token: action.token }));
             this.router.navigate(['/']);
         })
     ), { dispatch: false });
-
-    // registerSuccess$ = createEffect(() => this.actions$.pipe(
-    //   ofType(RegistrationActions.registerSuccess),
-    //   concatMap((action) => {
-    //     this.sessionService.setItem('token', action.token);
-    //     this.store.dispatch(RegistrationActions.registerSuccess({ message: action.message, token: action.token }));
-
-    //     return this.apiService.getUserInfo(action.token).pipe(
-    //       map((user) => {
-    //         return UserActions.loginSuccess({ user, token: action.token });
-    //       }),
-    //       catchError((error) => {
-    //         console.error('Failed to fetch user information:', error);
-    //         return of(UserActions.loginFailure({ error }));
-    //       }),
-    //       tap(() => {
-    //         this.router.navigate(['/']);
-    //       })
-    //     );
-    //   })
-    // ));
 
     checkEmailAvailability$ = createEffect(() => this.actions$.pipe(
       ofType(RegistrationActions.checkEmailAvailability),

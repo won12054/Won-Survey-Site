@@ -13,8 +13,9 @@ exports.register = async (req, res) => {
             { expiresIn: '1h' }  
         );
 
+        res.cookie('authToken', token, { httpOnly: true, maxAge: 600000, secure: true }); // 10 minutes
         
-        res.status(201).json({ message: 'User registered', token: token });
+        res.status(201).json({ user: savedUser, message: 'User registered', token: token });
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ error: error.message });
@@ -70,6 +71,8 @@ exports.login = (req, res, next) => {
                     { new: true, useFindAndModify: false }
                 );
 
+                res.cookie('authToken', token, { httpOnly: true, maxAge: 600000, secure: true }); // 10 minutes
+
                 return res.json({ message: 'Successfully logged in', user: updatedUser, token: token });
             } catch (error) {
                 return res.status(500).json({ message: "Failed to login", error: error.message });
@@ -77,3 +80,15 @@ exports.login = (req, res, next) => {
         });
     })(req, res, next);
 };
+
+exports.autoLogin = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).select('-password');
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.json({ user, message: 'Auto login successful'});
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching user', error: error.message });
+    }
+}

@@ -1,20 +1,16 @@
 <div class="home-container">
   <div class="welcome-box">
-    <ng-container *ngIf="(user$ | async) as user; else noUser">
-      <h3 *ngIf="user.login_count > 1; else firstTimeUser">
-        Welcome back, {{ user.username }}!
-      </h3>
-      <ng-template #firstTimeUser>
-        Welcome, {{ user.username }}!
-      </ng-template>
+    <ng-container *ngIf="username; else noUser">
+      <h3>Welcome, {{ username }}!</h3>
     </ng-container>
     <ng-template #noUser>
       <h3>Welcome to WON SURVEY!</h3>
     </ng-template>
     <p>Create, participate, and analyze surveys at your fingertips.</p>
     <div class="signin-container">
-
-      <a *ngIf="(isAuthenticated$ | async); else showLogin" (click)="onLogout()" class="signin-btn">Log Out</a>
+      <ng-container *ngIf="isAuthenticated$ | async; else showLogin">
+        <a (click)="onLogout()" class="signin-btn">Log Out</a>
+      </ng-container>
       <ng-template #showLogin>
         <a routerLink="/login" class="signin-btn">Log In</a>
       </ng-template>

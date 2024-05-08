@@ -11,6 +11,20 @@ export class AppComponent {
   constructor(private store: Store) {}
 
   ngOnInit() {
-    this.store.dispatch(UserActions.autoLogin());
+    if (this.checkLoginFlag()) {
+      this.store.dispatch(UserActions.autoLogin());
+    }
+
+    this.clearSession();
+  }
+
+  private checkLoginFlag(): boolean {
+    return document.cookie.split(';').some((item) => item.trim().startsWith('authToken=true'));
+  }
+
+  private clearSession() {
+    window.onbeforeunload = () => {
+      sessionStorage.clear();
+    };
   }
 }

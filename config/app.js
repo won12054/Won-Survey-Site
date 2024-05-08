@@ -1,24 +1,36 @@
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
 const passport = require('../middleware/passportSetup');
-const indexRoute = require('../routes/indexRoutes');
+const indexRoutes = require('../routes/indexRoutes');
 const authRoutes = require('../routes/authRoutes');
 const userRoutes = require('../routes/userRoutes');
 
+require('dotenv').config();
+
+const sessionSecret = process.env.SESSION_SECRET;
 const app = express();
+
 app.use(express.json());
-app.use(cors());
+
+const corsOptions = {
+    origin: 'http://localhost:4200',  
+    credentials: true,  
+    optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
 app.use(session({
-    secret: 'secret',
+    secret: sessionSecret,
     resave: false,
     saveUninitialized: true,
 }));
+app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 
 /* index routes */
-app.use('/api', indexRoute);
+app.use('/api', indexRoutes);
 
 /* auth routes */
 app.use('/api/auth', authRoutes);

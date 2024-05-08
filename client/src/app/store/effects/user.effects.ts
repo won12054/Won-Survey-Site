@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType} from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, map, mergeMap, tap } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { ApiService } from '../../services/api.service';
 import * as UserActions from '../actions/user.actions';
 import { Router } from '@angular/router';
@@ -32,28 +32,31 @@ export class UserEffects {
 
   loginSuccess$ = createEffect(() => this.actions$.pipe(
     ofType(UserActions.loginSuccess),
-    tap(() => {
-      console.log('Login successful');
+    tap((action) => {
+      this.sessionService.setItem('username', action.user.username);
       this.router.navigate(['/']);
     })
   ), { dispatch: false });
 
-  AutoLogin$ = createEffect(() => this.actions$.pipe(
+  autoLogin$ = createEffect(() => this.actions$.pipe(
     ofType(UserActions.autoLogin),
-    map(() => {
-      const token = this.sessionService.getItem('token') as string;
-      if (token) {
-        return UserActions.storeToken({ token });
-      } else {
-        return UserActions.clearToken();
-      }
+    switchMap(() => this.apiService.autoLogin().pipe(
+      map(response => {
+        this.sessionService.setItem('username', response.user.username);
+        return UserActions.storeToken({ token: 'validated' });
+      })
+    )),
+    catchError(error => {
+      console.log('Session validation failed', error);
+      return of(UserActions.clearToken());
     })
+
   ));
 
   logout$ = createEffect(() => this.actions$.pipe(
     ofType(UserActions.logout),
     tap(() => {
-      this.sessionService.removeItem('token');
+      this.sessionService.removeItem('username');
       this.store.dispatch(UserActions.clearToken());
       this.router.navigate(['/']);
     })

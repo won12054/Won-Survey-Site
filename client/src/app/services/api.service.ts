@@ -29,6 +29,11 @@ export class ApiService {
       return this.http.get(`${this.baseUrl}/api/auth/check-username?username=${username}`);
   }
 
+  autoLogin(): Observable<{user: User, message: string}> {
+    return this.http.get<{user: User, message: string}>(`${this.baseUrl}/api/auth/auto-login`, {
+      withCredentials: true
+    });
+  }
   getUserInfo(userId: string) {
     return this.http.get<User>(`${this.baseUrl}/api/users/${userId}`);
   }

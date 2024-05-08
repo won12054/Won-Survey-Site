@@ -44,6 +44,7 @@ export const userReducer = createReducer(
   })),
   on(UserActions.clearToken, state => ({
     ...state,
+    user: null,
     token: null,
     isAuthenticated: false
   })),
