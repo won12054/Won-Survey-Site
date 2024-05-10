@@ -21,7 +21,7 @@ export const clearToken = createAction(
 )
 
 export const checkEmailAvailability = createAction(
-  '[Registration Component] Check Email Avilability',
+  '[Registration Component] Check Email Availability',
   props<{ email: string }>()
 );
 

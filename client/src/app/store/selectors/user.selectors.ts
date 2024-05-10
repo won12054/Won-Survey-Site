@@ -11,7 +11,7 @@ export const selectUser = createSelector(
 export const selectIsAuthenticated = createSelector(
   selectUserState,
   userState => userState.isAuthenticated
-)
+);
 
 export const selectError = createSelector(
   selectUserState,
@@ -21,4 +21,4 @@ export const selectError = createSelector(
 export const selectToken = createSelector(
   selectUserState,
   userState => userState.token
-)
+);

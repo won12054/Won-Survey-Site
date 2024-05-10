@@ -1,6 +1,5 @@
 import { createReducer, on } from "@ngrx/store";
 import * as RegistrationActions from "../actions/registration.actions";
-import { User } from "src/app/models/user.model";
 
 export interface RegistrationState {
   usernameAvailable: boolean | null;

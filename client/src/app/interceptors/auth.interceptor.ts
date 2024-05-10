@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable, switchMap, take } from 'rxjs';
-import { SessionService } from '../services/session.service';
 import { Store, select } from '@ngrx/store';
 import { AppState } from '../store/app.state';
 import { selectToken } from '../store/selectors/user.selectors';

@@ -11,22 +11,23 @@ export const loginSuccess = createAction(
   props<{ user: User, token: string }>()
 );
 
-export const autoLogin = createAction(
-  '[Login Component] Auto Login',
-);
-
-export const storeToken = createAction(
-  '[Login Component] Store Token',
-  props<{ token: string }>()
-);
-
 export const loginFailure = createAction(
   '[Login Component] Login Failure',
   props<{ error: any }>()
 );
 
+export const autoLogin = createAction(
+  '[Login Component] Auto Login',
+);
+
+
 export const logout = createAction(
   '[Login Component] Logout'
+);
+
+export const storeToken = createAction(
+  '[Login Component] Store Token',
+  props<{ token: string }>()
 );
 
 export const clearToken = createAction(

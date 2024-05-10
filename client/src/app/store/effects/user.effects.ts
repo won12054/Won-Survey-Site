@@ -21,7 +21,7 @@ export class UserEffects {
 
   login$ = createEffect(() => this.actions$.pipe(
     ofType(UserActions.login),
-    mergeMap(action => // handle effects that involve asynchronous operations like API calls and flattens the observables from multiple actions into a single observable.
+    switchMap(action =>
       this.apiService.login(action.email, action.password)
         .pipe(
           map(response => UserActions.loginSuccess({ user: response.user, token: response.token })),
@@ -48,7 +48,7 @@ export class UserEffects {
     )),
     catchError(error => {
       console.log('Session validation failed', error);
-      return of(UserActions.clearToken());
+      return of(UserActions.loginFailure({ error: 'Auto login failed' }));
     })
 
   ));
@@ -57,7 +57,6 @@ export class UserEffects {
     ofType(UserActions.logout),
     tap(() => {
       this.sessionService.removeItem('username');
-      this.store.dispatch(UserActions.clearToken());
       this.router.navigate(['/']);
     })
   ), { dispatch: false });

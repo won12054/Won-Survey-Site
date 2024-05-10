@@ -1,7 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import * as UserActions from '../actions/user.actions';
 import { User } from 'src/app/models/user.model';
-import { state } from '@angular/animations';
 
 export interface UserState {
   user: User | null;
@@ -26,11 +25,6 @@ export const userReducer = createReducer(
     token: token,
     error: null
   })),
-  on(UserActions.storeToken, (state, { token }) => ({
-    ...state,
-    token: token,
-    isAuthenticated: true
-  })),
   on(UserActions.loginFailure, (state, { error }) => ({
     ...state,
     error: error,
@@ -41,6 +35,11 @@ export const userReducer = createReducer(
     user: null,
     isAuthenticated: false,
     token: null
+  })),
+  on(UserActions.storeToken, (state, { token }) => ({
+    ...state,
+    token: token,
+    isAuthenticated: true
   })),
   on(UserActions.clearToken, state => ({
     ...state,

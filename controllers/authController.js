@@ -13,9 +13,12 @@ exports.register = async (req, res) => {
             { expiresIn: '1h' }  
         );
 
+        const userToSend = savedUser.toObject();
+        delete userToSend.password;
+
         res.cookie('authToken', token, { httpOnly: true, maxAge: 600000, secure: true }); // 10 minutes
         
-        res.status(201).json({ user: savedUser, message: 'User registered', token: token });
+        res.status(201).json({ user: userToSend, message: 'User registered', token: token });
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ error: error.message });
@@ -71,9 +74,11 @@ exports.login = (req, res, next) => {
                     { new: true, useFindAndModify: false }
                 );
 
+                const updatedUserWithoutPassword = await User.findById(user._id).select('-password');
+
                 res.cookie('authToken', token, { httpOnly: true, maxAge: 600000, secure: true }); // 10 minutes
 
-                return res.json({ message: 'Successfully logged in', user: updatedUser, token: token });
+                return res.json({ message: 'Successfully logged in', user: updatedUserWithoutPassword, token: token });
             } catch (error) {
                 return res.status(500).json({ message: "Failed to login", error: error.message });
             }
@@ -83,7 +88,7 @@ exports.login = (req, res, next) => {
 
 exports.autoLogin = async (req, res) => {
     try {
-        const user = await User.findById(req.user.id).select('-password');
+        const user = await User.findById(req.user.id).select('-password'); // exclude 'password' field
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
