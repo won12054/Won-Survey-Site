@@ -13,14 +13,6 @@ import { selectIsAuthenticated, selectUser } from 'src/app/store/selectors/user.
 })
 export class HomeComponent {
 
-  // user$: Observable<User>;
-  // isAuthenticated$: Observable<boolean>;
-
-  // constructor(private store: Store<AppState>) {
-  //   this.user$ = this.store.pipe(select(selectUser));
-  //   this.isAuthenticated$ = this.store.pipe(select(selectIsAuthenticated));
-  // }
-
   username: string | null = null;
   isAuthenticated$: Observable<boolean>;
 

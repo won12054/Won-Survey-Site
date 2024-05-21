@@ -8,7 +8,7 @@ export const login = createAction(
 
 export const loginSuccess = createAction(
   '[Login Component] Login Success',
-  props<{ user: User, token: string }>()
+  props<{ user: User }>()
 );
 
 export const loginFailure = createAction(
@@ -16,25 +16,6 @@ export const loginFailure = createAction(
   props<{ error: any }>()
 );
 
-export const autoLogin = createAction(
-  '[Login Component] Auto Login',
-);
-
-
 export const logout = createAction(
   '[Login Component] Logout'
-);
-
-export const storeToken = createAction(
-  '[Login Component] Store Token',
-  props<{ token: string }>()
-);
-
-export const clearToken = createAction(
-  '[Login Component] Clear Token'
-)
-
-export const updateUser = createAction(
-  '[Login Component] Update User',
-  props<{ user: User }>()
 );

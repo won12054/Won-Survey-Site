@@ -2,9 +2,8 @@ import { Component } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable, catchError, debounceTime, distinctUntilChanged, filter, first, map, of, switchMap, take, tap, timeout, timer } from 'rxjs';
-import { ApiService } from 'src/app/services/api.service';
 import * as RegistrationActions from 'src/app/store/actions/registration.actions';
-import { selectIsEmailAvailable, selectIsUsernameAvailable, selectRegistrationError } from 'src/app/store/selectors/registration.selectors';
+import { selectIsEmailAvailable, selectIsUsernameAvailable } from 'src/app/store/selectors/registration.selectors';
 
 @Component({
   selector: 'app-registration',
@@ -54,15 +53,13 @@ export class RegistrationComponent {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       return control.valueChanges.pipe(
         debounceTime(300),
-        distinctUntilChanged(),  // only proceed if the value has actually changed
+        distinctUntilChanged(),
         switchMap(value => {
           if (!value) {
             return of(null);
           }
           this.store.dispatch(RegistrationActions.checkEmailAvailability({ email: value }));
 
-          // introduce a short delay before emitting the current value
-          // this ensures that the validator reacts to the most recent input
           return timer(100).pipe(
             switchMap(() => this.isEmailAvailable$),
             filter(isAvailable => isAvailable !== null),  // ensure we get a non-null response
@@ -72,13 +69,13 @@ export class RegistrationComponent {
               const validationOutcome = isAvailable ? null : { emailTaken: true };
               return validationOutcome;
             }),
-            catchError(error => {
+            catchError(_ => {
               return of({ emailTaken: true });
             })
           );
         }),
         first(),
-        catchError(error => {
+        catchError(_ => {
           return of({ emailTaken: true });
         })
       );
@@ -104,13 +101,13 @@ export class RegistrationComponent {
               const validationOutcome = isAvailable ? null : { usernameTaken: true };
               return validationOutcome;
             }),
-            catchError(error => {
+            catchError(_ => {
               return of({ usernameTaken: true });
             })
           );
         }),
         first(),
-        catchError(error => {
+        catchError(_ => {
           return of({ usernameTaken: true });
         })
       );
@@ -121,7 +118,7 @@ export class RegistrationComponent {
   passwordMatchValidator(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       if (!control.parent || !control.parent.get('password') || !control.parent.get('confirm_password')) {
-        return of(null);  // Ensure both fields are initialized
+        return of(null);
       }
 
       const password = control.parent.get('password').value;

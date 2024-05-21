@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import * as UserActions from 'src/app/store/actions/user.actions';
@@ -16,7 +15,7 @@ export class LoginComponent {
   password: string = '';
   errorMessage$: Observable<string>;
 
-  constructor(private store: Store<AppState>, private router: Router) {
+  constructor(private store: Store<AppState>) {
     this.errorMessage$ = this.store.pipe(select(selectError));
   }
 

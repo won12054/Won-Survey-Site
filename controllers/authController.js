@@ -18,7 +18,7 @@ exports.register = async (req, res) => {
 
         res.cookie('authToken', token, { httpOnly: true, maxAge: 600000, secure: true }); // 10 minutes
         
-        res.status(201).json({ user: userToSend, message: 'User registered', token: token });
+        res.status(201).json({ user: userToSend, message: 'User registered' });
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ error: error.message });
@@ -68,7 +68,7 @@ exports.login = (req, res, next) => {
                     { expiresIn: '1h' }
                 );
 
-                const updatedUser = await User.findByIdAndUpdate(
+                await User.findByIdAndUpdate(
                     user._id,
                     { $inc: { login_count: 1 }, last_login: new Date() },
                     { new: true, useFindAndModify: false }
@@ -78,22 +78,10 @@ exports.login = (req, res, next) => {
 
                 res.cookie('authToken', token, { httpOnly: true, maxAge: 600000, secure: true }); // 10 minutes
 
-                return res.json({ message: 'Successfully logged in', user: updatedUserWithoutPassword, token: token });
+                return res.json({ message: 'Successfully logged in', user: updatedUserWithoutPassword });
             } catch (error) {
                 return res.status(500).json({ message: "Failed to login", error: error.message });
             }
         });
     })(req, res, next);
 };
-
-exports.autoLogin = async (req, res) => {
-    try {
-        const user = await User.findById(req.user.id).select('-password'); // exclude 'password' field
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-        res.json({ user, message: 'Auto login successful'});
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching user', error: error.message });
-    }
-}

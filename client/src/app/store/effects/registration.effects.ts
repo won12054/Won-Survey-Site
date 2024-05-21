@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, concatMap, map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import * as RegistrationActions from '../actions/registration.actions';
 import { ApiService } from '../../services/api.service';
 import { Router } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
 import { SessionService } from 'src/app/services/session.service';
-import { Store } from '@ngrx/store';
-import * as UserActions from '../actions/user.actions';
 
 @Injectable()
 export class RegistrationEffects {
@@ -17,7 +14,6 @@ export class RegistrationEffects {
         private apiService: ApiService,
         private sessionService: SessionService,
         private router: Router,
-        private store: Store
     ) {}
 
     register$ = createEffect(() => this.actions$.pipe(
@@ -26,8 +22,7 @@ export class RegistrationEffects {
             this.apiService.register(action.user).pipe(
                 map(response => {
                   const user = response.user;
-                  const token = response.token;
-                  return RegistrationActions.registerSuccess({ user: user, message: 'Registration successful!', token: token })
+                  return RegistrationActions.registerSuccess({ user: user, message: 'Registration successful!' })
                 }),
                 catchError(error => of(RegistrationActions.registerFailure({ error: error.error.message })))
             )
@@ -38,7 +33,6 @@ export class RegistrationEffects {
         ofType(RegistrationActions.registerSuccess),
         tap((action) => {
             this.sessionService.setItem('username', action.user.username);
-            this.store.dispatch(UserActions.storeToken({ token: action.token }));
             this.router.navigate(['/']);
         })
     ), { dispatch: false });

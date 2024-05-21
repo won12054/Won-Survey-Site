@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,7 +18,6 @@ import { UserEffects } from './store/effects/user.effects';
 import { RegistrationComponent } from './components/register/registration.component';
 import { registrationReducer } from './store/reducers/registration.reducers';
 import { RegistrationEffects } from './store/effects/registration.effects';
-import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -40,7 +39,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     StoreModule.forRoot({user: userReducer, registration: registrationReducer}),
     EffectsModule.forRoot([UserEffects, RegistrationEffects])
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

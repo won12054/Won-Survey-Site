@@ -8,16 +8,12 @@ export const register = createAction(
 
 export const registerSuccess = createAction(
   '[Registration Component] Register Success',
-  props<{ user: User, message: string, token: string }>()
+  props<{ user: User, message: string }>()
 )
 
 export const registerFailure = createAction(
   '[Registration Component] Register Failure',
   props<{ error: string }>()
-)
-
-export const clearToken = createAction(
-  '[Registration Component] Clear Token',
 )
 
 export const checkEmailAvailability = createAction(

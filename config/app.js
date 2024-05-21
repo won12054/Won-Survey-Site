@@ -14,12 +14,7 @@ const app = express();
 
 app.use(express.json());
 
-const corsOptions = {
-    origin: 'http://localhost:4200',  
-    credentials: true,  
-    optionsSuccessStatus: 200
-};
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(session({
     secret: sessionSecret,
     resave: false,

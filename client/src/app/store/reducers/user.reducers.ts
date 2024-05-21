@@ -5,24 +5,21 @@ import { User } from 'src/app/models/user.model';
 export interface UserState {
   user: User | null;
   isAuthenticated: boolean;
-  token: string | null;
   error: any | null;
 }
 
 export const initialState: UserState = {
   user: null,
   isAuthenticated: false,
-  token: null,
   error: null
 };
 
 export const userReducer = createReducer(
   initialState,
-  on(UserActions.loginSuccess, (state, { user, token }) => ({
+  on(UserActions.loginSuccess, (state, { user }) => ({
     ...state,
     user: user,
     isAuthenticated: true,
-    token: token,
     error: null
   })),
   on(UserActions.loginFailure, (state, { error }) => ({
@@ -36,19 +33,4 @@ export const userReducer = createReducer(
     isAuthenticated: false,
     token: null
   })),
-  on(UserActions.storeToken, (state, { token }) => ({
-    ...state,
-    token: token,
-    isAuthenticated: true
-  })),
-  on(UserActions.clearToken, state => ({
-    ...state,
-    user: null,
-    token: null,
-    isAuthenticated: false
-  })),
-  on(UserActions.updateUser, (state, { user }) => ({
-    ...state,
-    user: user
-  }))
 );

@@ -5,7 +5,6 @@ export interface RegistrationState {
   usernameAvailable: boolean | null;
   emailAvailable: boolean | null;
   message: string | null;
-  token: string | null;
   error: string | null;
 }
 
@@ -13,26 +12,20 @@ export const initialRegistrationState: RegistrationState = {
   usernameAvailable: null,
   emailAvailable: null,
   message: null,
-  token: null,
   error: null
 }
 
 export const registrationReducer = createReducer(
   initialRegistrationState,
-  on(RegistrationActions.registerSuccess, (state, { message, token }) => ({
+  on(RegistrationActions.registerSuccess, (state, { message }) => ({
       ...state,
       message: message,
-      token: token,
       error: null
   })),
   on(RegistrationActions.registerFailure, (state, { error }) => ({
       ...state,
       error: error,
       message: null
-  })),
-  on(RegistrationActions.clearToken, (state) => ({
-    ...state,
-    token: null
   })),
   on(RegistrationActions.checkUsernameAvailabilitySuccess, (state, { isAvailable }) => ({
     ...state,
