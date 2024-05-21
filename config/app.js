@@ -6,6 +6,7 @@ const passport = require('../middleware/passportSetup');
 const indexRoutes = require('../routes/indexRoutes');
 const authRoutes = require('../routes/authRoutes');
 const userRoutes = require('../routes/userRoutes');
+const surveyRoutes = require('../routes/surveyRoutes');
 
 require('dotenv').config();
 
@@ -32,5 +33,8 @@ app.use('/api/auth', authRoutes);
 
 /* user routes */
 app.use('/api/users', userRoutes);
+
+/* survey routes */
+app.use('/api/surveys', surveyRoutes);
 
 module.exports = app;

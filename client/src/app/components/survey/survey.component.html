@@ -1,1 +1,28 @@
-<p>survey works!</p>
+<div class="home-container">
+  <div class="welcome-box">
+    <table>
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let survey of surveys; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ survey.title }}</td>
+          <td>{{ survey.author.username }}</td>
+          <td>{{ survey.start_date | date }}</td>
+          <td>{{ survey.end_date | date }}</td>
+          <td>{{ survey.is_active ? 'Yes' : 'No' }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+</div>
